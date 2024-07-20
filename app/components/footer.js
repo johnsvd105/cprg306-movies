@@ -4,6 +4,7 @@ const Footer = () => {
         <p className="mb-4">
             This product uses the TMDB API but is not endorsed or certified by TMDB.
         </p>
+        {/* change to <Image>? */}
         <img src="/tmdb-log/placeholder" alt="TMDB Logo" className="mx-auto mt-2" />
       </footer>
     );
