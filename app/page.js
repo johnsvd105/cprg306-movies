@@ -1,7 +1,5 @@
-import Image from "next/image";
 import Layout from "./components/layout";
 import MovieGrid from "./components/movie-grid";
-import Link from "next/link";
 import { fetchMovies } from "./_utils/api";
 
 

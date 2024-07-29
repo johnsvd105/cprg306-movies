@@ -23,3 +23,19 @@ export const fetchMovies = async (region,type) => {
         return [];
     }
 }
+
+
+export const fetchMovieDetails = async (id) => {
+    try {
+        const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`,options);
+        if (!response.ok) {
+            throw new Error('Failed to fetch currently playing movies');
+        }
+        const data = await response.json();
+        return data
+    } 
+    catch (error) {
+        console.error(error);
+        return null;
+    }
+}
