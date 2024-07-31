@@ -1,6 +1,5 @@
-'use client'
-import Link from 'next/link';
-import SearchMenu from './search-menu'
+import Link from "next/link";
+import SearchMenu from "./search-menu"
 
 const Header = () => {
   return (

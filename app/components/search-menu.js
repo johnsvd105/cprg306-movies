@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+"use client"
+import { useState, useEffect } from "react";
 
 const SearchMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,12 +15,12 @@ const SearchMenu = () => {
   // Disable scrolling when the search menu is open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     }
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, [isOpen]);
 

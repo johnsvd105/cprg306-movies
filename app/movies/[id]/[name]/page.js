@@ -38,7 +38,7 @@ const MoviePage = async ({params }) => {
                 Release Date: {currentMovie.release_date} ({new Date(currentMovie.release_date).toDateString()})
                 </p>
                 <p className="text-lg mb-2">
-                Genres: {currentMovie.genres.map(genre => genre.name).join(', ')}
+                Genres: {currentMovie.genres.map(genre => genre.name).join(", ")}
                 </p>
                 <p className="text-lg mb-8">
                 Runtime: {formatRuntime(currentMovie.runtime)}
