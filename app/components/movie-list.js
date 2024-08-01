@@ -50,24 +50,22 @@ const MovieList = ({type }) => {
 
     setLoading(true);
     const newPage = page + 1;
-    const newMovies = await fetchMovies("popular", "CA", newPage);
+    const newMovies = await fetchMovies("popular", newPage);
     const updatedMovies = getUniqueMovies([...movies, ...newMovies.results]);
 
     setMovies(updatedMovies);
     setPage(newPage);
-    setTimeout(() => setLoading(false),1000);
+    setLoading(false);
   };
 
 
 
   return (
     <div>
-      <MovieGrid movies={movies} onLoadMore={loadMore} loading={loading}
-      showLoadMoreButton={false}
-      />
+      <MovieGrid movies={movies} />
        {loading && (
         <div className="p-4 flex items-center mb-4 flex-col">
-          <div className="bg-gray-600 object-cover flex-1 w-full rounded mb-2 flex items-center justify-center">
+          <div className="bg-blue-600 object-cover flex-1 w-full rounded mb-2 flex items-center justify-center">
             <p className="text-lg">Loading more...</p>
           </div>
         </div>

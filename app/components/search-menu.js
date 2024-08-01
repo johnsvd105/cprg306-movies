@@ -1,8 +1,16 @@
 "use client"
 import { useState, useEffect } from "react";
+import { searchMovies } from "../_utils/api";
+import { filteredMovieList,formatUrlTitle } from "../_utils/utils";
+import Link from "next/link";
+
 
 const SearchMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -10,17 +18,34 @@ const SearchMenu = () => {
 
   const closeMenu = () => {
     setIsOpen(false);
+    setQuery("");
+    setSearchResults([]);
   };
 
-  // Disable scrolling when the search menu is open
+
+  useEffect(() => {
+    if (query.length >= 3) {
+      const fetchData = async () => {
+          setLoading(true);
+          const movies = await searchMovies(query);
+
+          setSearchResults(filteredMovieList(movies.results));
+          setLoading(false);
+        };
+        fetchData();
+    } else {
+        setSearchResults([]);
+    }
+  }, [query]);
+
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+        document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto";
+        document.body.style.overflow = "auto";
     }
     return () => {
-      document.body.style.overflow = "auto";
+        document.body.style.overflow = "auto";
     };
   }, [isOpen]);
 
@@ -40,15 +65,24 @@ const SearchMenu = () => {
                 type="text"
                 className="border border-gray-300 p-2 w-full text-black"
                 placeholder="Search movies..."
+                value={query}
+                onChange={(e)=> setQuery(e.target.value)}
               />
             </div>
             <div className="mt-4 max-h-[70vh] overflow-y-auto px-8">
-              {/* Dynamic movie results will go here */}
-              {[...Array(6)].map((_, index) => (
-                <div key={index} className="flex items-center mb-4 bg-gray-700 p-4 rounded w-full">
-                  <div className="w-16 h-24 bg-gray-400 mr-4"></div>
-                  <div className="text-white flex-grow">Movie {index + 1}</div>
-                </div>
+            {loading && <p className="text-white">Loading...</p>}
+              {!loading && searchResults.length === 0 && query.length >= 3 && <p className="text-white">No results found.</p>}
+              {!loading && searchResults.map((movie) => (
+                <Link href={`/movies/${movie.id}/${formatUrlTitle(movie.title)}`} passHref key={movie.id}>
+                  <div className="flex items-center mb-4 bg-gray-700 p-4 rounded w-full cursor-pointer">
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      alt={movie.title}
+                      className="w-auto h-40 bg-gray-400 mr-4 object-cover" 
+                    />
+                    <div className="text-white flex-grow">{movie.title}</div>
+                  </div>
+                </Link>
               ))}
             </div>
           </div>

@@ -1,5 +1,7 @@
 export const formatUrlTitle = (title) => {
     return title
+        .normalize('NFD') // Normalize to decompose accents
+        .replace(/[\u0300-\u036f]/g, '') // Remove accents and diacritics
         .toLowerCase()
         .replace(/[:\s]/g, '-')
         .replace(/[^a-z0-9-]/g, '') // Remove any remaining invalid characters
