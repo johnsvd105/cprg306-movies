@@ -16,7 +16,6 @@ export const fetchMovies = async (type, page = 1, region ="CA" ) => {
             throw new Error("Failed to fetch movies");
         }
         const data = await response.json();
-        console.log("fetched data: ", data);
         return data;
     } 
     catch (error) {
@@ -33,7 +32,6 @@ export const fetchMovieDetails = async (id) => {
             throw new Error("Failed to fetch movies");
         }
         const data = await response.json();
-        console.log("fetched data: ", data);
         return data
     } 
     catch (error) {
@@ -49,7 +47,6 @@ export const searchMovies = async(query, page = 1, region="CA") => {
             throw new Error("Failed to fetch movies");
         }
         const data = await response.json();
-        console.log("fetched data: ", data);
         return data
     } 
     catch (error) {
@@ -57,3 +54,35 @@ export const searchMovies = async(query, page = 1, region="CA") => {
         return [];
     }
 }
+
+export const fetchGenres = async () => {
+    try {
+      const response = await fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', options)
+      const data = await response.json();
+      return data.genres;
+    } catch (error) {
+      console.error("Error fetching genres:", error);
+      return [];
+    }
+  };
+
+
+export const discoverMovies = async(criteria, page = 1) => {
+    const { sortOption, fromDate, toDate, selectedGenres } = criteria;
+    const genreString = selectedGenres.join(",");
+
+    const url = new URL(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}`);
+    url.searchParams.append("sort_by", sortOption);
+    if (fromDate) url.searchParams.append("primary_release_date.gte", fromDate);
+    if (toDate) url.searchParams.append("primary_release_date.lte", toDate);
+    if (genreString) url.searchParams.append("with_genres", genreString);
+
+    try {
+        const response = await fetch(url,options);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching genres:", error);
+        return [];
+    }
+  }

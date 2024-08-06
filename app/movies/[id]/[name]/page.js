@@ -5,13 +5,13 @@ import { formatRuntime } from "@/app/_utils/utils";
 import { useEffect,useState } from "react";
 import { formatUrlTitle } from "@/app/_utils/utils";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const IndividualMoviePage = ({params }) => {
     const {id} = params;
     const [currentMovie,setCurrentMovie] = useState(null);
     const [loading, setLoading] = useState(true);
     const pathname = usePathname();
-
 
     useEffect(() => {
         if (id) {
@@ -78,7 +78,18 @@ const IndividualMoviePage = ({params }) => {
                     Release Date: {currentMovie.release_date} ({new Date(currentMovie.release_date).toDateString()})
                     </p>
                     <p className="text-lg mb-2">
-                    Genres: {currentMovie.genres.map(genre => genre.name).join(", ")}
+                    Genres: {currentMovie.genres.map(genre => (
+                        <Link
+                        key={genre.id}
+                        href={{
+                            pathname: '/movies',
+                            query: {genre: genre.id},
+                        }}
+                        >
+                        <span className="text-blue-500 cursor-pointer">{genre.name}</span>
+                        </Link>
+                    )).reduce((prev, curr) => [prev, ', ', curr])}
+                    {/* Genres: {currentMovie.genres.map(genre => genre.name).join(", ")} */}
                     </p>
                     <p className="text-lg mb-8">
                     Runtime: {formatRuntime(currentMovie.runtime)}

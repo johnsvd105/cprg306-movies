@@ -50,7 +50,7 @@ const MovieList = ({type }) => {
 
     setLoading(true);
     const newPage = page + 1;
-    const newMovies = await fetchMovies("popular", newPage);
+    const newMovies = await fetchMovies(type, newPage);
     const updatedMovies = getUniqueMovies([...movies, ...newMovies.results]);
 
     setMovies(updatedMovies);

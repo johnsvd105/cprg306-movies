@@ -1,13 +1,25 @@
+"use client"
+import { useEffect, useState } from "react";
 import Layout from "../components/layout";
-import MovieGrid from "../components/movie-grid";
-import { fetchMovies } from "../_utils/api";
+import MovieCriteriaList from "../components/movies-criteria-list";
 
-const MoviesPage = async () => {
-    const currentlyPlayingMovies = await fetchMovies("now_playing");
-    const popularMovies = await fetchMovies("popular");
-  
+const MoviesPage = () => {
+
+  const [initialGenres, setInitialGenres] = useState([]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const genresFromQuery = params.get('genre')
+        ? params.get('genre').split(',').map(id => parseInt(id))
+        : [];
+      setInitialGenres(genresFromQuery);
+    }
+  }, []);
+
     return (
       <Layout>
+        <MovieCriteriaList genres={initialGenres}/>
       </Layout>
     );
   };
